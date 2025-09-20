@@ -1,7 +1,11 @@
 import { useState } from "react";
 
-export default function CountryCard({ e, i, setTotalVisited }) {
+export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
     const [visited, setVisited] = useState(false);
+    let handleModal = (m) => {
+      document.getElementById('my_modal_5').showModal()
+      setModalData(m)
+    }
 
     return (
         <span
@@ -22,9 +26,9 @@ export default function CountryCard({ e, i, setTotalVisited }) {
                         Object.entries(e.languages.languages)
                             .slice(0, 3) // take only the first 3
                             .map(([key, value]) => (
-                                <p key={key} className="text-sm text-gray-200">
+                                <span key={key} className="text-xs m-1 text-gray-200">
                                     {value}
-                                </p>
+                                </span>
                             ))}
                 </span>
             </div>
@@ -34,14 +38,11 @@ export default function CountryCard({ e, i, setTotalVisited }) {
                         setVisited(!visited);
                         setTotalVisited(prev => !visited ? prev + 1 : prev - 1);
                     }}
-                    className="px-2 py-1 rounded text-sm bg-indigo-700 text-white hover:bg-indigo-800"
+                    className={`btn ${visited ? "btn-neutral" : "btn-soft"}`}
                 >
                     {visited ? "Visited" : "Not Visited"}
                 </button>
-
-                <button className="px-2 py-1 rounded text-sm bg-indigo-700 text-white hover:bg-indigo-800">
-                    ss
-                </button>
+                <button className="btn" onClick={() => handleModal(e)}>i</button>
             </div>
         </span>
     );
