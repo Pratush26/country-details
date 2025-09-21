@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { BsInfoLg } from "react-icons/bs";
+import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
 
 export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
     const [visited, setVisited] = useState(false);
+    const [bookmarked, setBookmarked] = useState(false);
     let handleModal = (m) => {
       document.getElementById('my_modal_5').showModal()
       setModalData(m)
@@ -10,7 +13,7 @@ export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
     return (
         <span
             key={i}
-            className={`p-2 border rounded flex flex-col items-center justify-center h-full ${visited ? "bg-gray-700 text-white" : ""}`}
+            className={`px-2 py-4 border rounded flex flex-col items-center justify-center h-full ${visited ? "bg-gray-700 text-white" : ""}`}
         >
             <div className="flex items-center w-full gap-2 p-2">
                 <img
@@ -42,7 +45,8 @@ export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
                 >
                     {visited ? "Visited" : "Not Visited"}
                 </button>
-                <button className="btn" onClick={() => handleModal(e)}>i</button>
+                <button className="btn" onClick={() => handleModal(e)}><BsInfoLg /></button>
+                <button className="btn" onClick={() => setBookmarked(!bookmarked)}>{bookmarked ? <FaBookmark /> : <FaRegBookmark />}</button>
             </div>
         </span>
     );

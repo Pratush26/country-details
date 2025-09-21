@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import favicon from "./assets/favicon.ico";
+import favicon from "./assets/flag-108-svgrepo-com.svg";
 import "./App.css";
 import CountryCardContainer from "./components/CardContainer";
 
@@ -15,12 +15,15 @@ export default function App() {
   return (
     <main>
       <nav className="w-11/12 mx-auto flex in-checked: justify-between p-2">
-        <a href="/"><img src={favicon} alt="Vite logo" className="dark:invert h-8 w-auto" /></a>
+        <a href="/"><img src={favicon} alt="Vite logo" className="h-8 w-auto" /></a>
         <form action="">
-          <input type="text" name="name" id="name" className="bg-white" />
+          <input type="text" placeholder="Search by country name" name="countryName" id="countryName" className="input input-sm" />
         </form>
       </nav>
-      <h1>Welcome to world countries</h1>
+      <section className="flex flex-col items-center justify-center text-center my-14 gap-2">
+        <h1 className="text-5xl font-bold">Welcome to world countries</h1>
+        <h4>Find your desired country details from here</h4>
+      </section>
       <Suspense fallback={<p>Loading...</p>}>
         <CountryCardContainer data={dataPromise} />
       </Suspense>
