@@ -1,19 +1,45 @@
-import { useState } from "react";
 import { BsInfoLg } from "react-icons/bs";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
 
-export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
-    const [visited, setVisited] = useState(false);
-    const [bookmarked, setBookmarked] = useState(false);
+export default function CountryCard({ e, i, setModalData, refreshLocalStorage }) {
     let handleModal = (m) => {
-      document.getElementById('my_modal_5').showModal()
-      setModalData(m)
+        document.getElementById('my_modal_5').showModal()
+        setModalData(m)
     }
-
+    let visitedCountries = JSON.parse(localStorage.getItem("visitedCountries"));
+    let bookmarkedCountries = JSON.parse(localStorage.getItem("bookmarkedCountries"));
+    let btnClick = (type) => {
+        if (type === "bookmark") {
+            if (!bookmarkedCountries) {
+                localStorage.setItem("bookmarkedCountries", JSON.stringify([e.ccn3.ccn3]));
+            } else {
+                if (bookmarkedCountries.includes(e.ccn3.ccn3)) {
+                    bookmarkedCountries = bookmarkedCountries.filter(c => c !== e.ccn3.ccn3);
+                    localStorage.setItem("bookmarkedCountries", JSON.stringify(bookmarkedCountries));
+                } else {
+                    bookmarkedCountries.push(e.ccn3.ccn3);
+                    localStorage.setItem("bookmarkedCountries", JSON.stringify(bookmarkedCountries));
+                }
+            }
+        } else {
+            if (!visitedCountries) {
+                localStorage.setItem("visitedCountries", JSON.stringify([e.ccn3.ccn3]));
+            } else {
+                if (visitedCountries.includes(e.ccn3.ccn3)) {
+                    visitedCountries = visitedCountries.filter(c => c !== e.ccn3.ccn3);
+                    localStorage.setItem("visitedCountries", JSON.stringify(visitedCountries));
+                } else {
+                    visitedCountries.push(e.ccn3.ccn3);
+                    localStorage.setItem("visitedCountries", JSON.stringify(visitedCountries));
+                }
+            }
+        }
+        refreshLocalStorage();
+    }
     return (
         <span
             key={i}
-            className={`px-2 py-4 border rounded flex flex-col items-center justify-center h-full ${visited ? "bg-gray-700 text-white" : ""}`}
+            className={`px-2 py-4 border rounded flex flex-col items-center justify-center h-full ${(visitedCountries || []).includes(e.ccn3.ccn3) ? "bg-gray-700 text-white" : ""}`}
         >
             <div className="flex items-center w-full gap-2 p-2">
                 <img
@@ -37,16 +63,13 @@ export default function CountryCard({ e, i, setTotalVisited, setModalData }) {
             </div>
             <div className="flex items-center justify-around gap-2 w-full">
                 <button
-                    onClick={() => {
-                        setVisited(!visited);
-                        setTotalVisited(prev => !visited ? prev + 1 : prev - 1);
-                    }}
-                    className={`btn ${visited ? "btn-neutral" : "btn-soft"}`}
+                    onClick={() => btnClick("visited")}
+                    className={`btn ${(visitedCountries || []).includes(e.ccn3.ccn3) ? "btn-neutral" : "btn-soft"}`}
                 >
-                    {visited ? "Visited" : "Not Visited"}
+                    {(visitedCountries || []).includes(e.ccn3.ccn3) ? "Visited" : "Not Visited"}
                 </button>
                 <button className="btn" onClick={() => handleModal(e)}><BsInfoLg /></button>
-                <button className="btn" onClick={() => setBookmarked(!bookmarked)}>{bookmarked ? <FaBookmark /> : <FaRegBookmark />}</button>
+                <button className="btn" onClick={() => btnClick("bookmark")}>{(bookmarkedCountries || []).includes(e.ccn3.ccn3) ? <FaBookmark /> : <FaRegBookmark />}</button>
             </div>
         </span>
     );

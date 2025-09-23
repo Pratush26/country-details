@@ -1,11 +1,9 @@
 import { use, useState } from "react";
 import CountryCard from "./Card";
 
-export default function CountryCardContainer({ data }) {
+export default function CountryCardContainer({ data, refreshLocalStorage }) {
   const datam = use(data);
-  const [totalVisited, setTotalVisited] = useState(0);
   const [modalData, setModalData] = useState(null);
-  console.log(modalData)
   return (
     <>
       {/* modal */}
@@ -41,10 +39,6 @@ export default function CountryCardContainer({ data }) {
         </div>
       </dialog>
       {/* modal */}
-      <div className="w-11/12 mx-auto my-4 font-semibold">
-      <h3>Total visited : {totalVisited}</h3>
-      <h3>Bookmarked : {totalVisited}</h3>
-      </div>
       <section className="grid grid-cols-4 gap-4 place-content-center p-4">
         {datam.map((e, i) => (
           <CountryCard
@@ -52,7 +46,7 @@ export default function CountryCardContainer({ data }) {
             e={e}
             i={i}
             setModalData={setModalData}
-            setTotalVisited={setTotalVisited}
+            refreshLocalStorage={refreshLocalStorage}
           />
         ))}
       </section>
