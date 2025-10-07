@@ -1,9 +1,31 @@
-import { use, useState } from "react";
+import { use, useContext, useState } from "react";
 import CountryCard from "./Card";
+import { SearchContext } from "../context/context";
 
 export default function CountryCardContainer({ data, refreshLocalStorage }) {
   const datam = use(data);
   const [modalData, setModalData] = useState(null);
+
+  const { searchWord, selectedOption } = useContext(SearchContext)
+  const dataSet = searchWord ? datam.filter(e => 
+    selectedOption === 'name' ?
+    e.name.common.trim().toLowerCase().includes(searchWord.trim().toLowerCase())
+    :
+    selectedOption === 'languages' ?
+    Object.values(e.languages.languages).some(lang => lang.toLowerCase().includes(searchWord.trim().toLowerCase()))
+    :
+    selectedOption === 'region' ?
+    e.region.region.trim().toLowerCase().includes(searchWord.trim().toLowerCase())
+    :
+    selectedOption === 'capital' ?
+    e.capital.capital.find(f => f.toLowerCase().includes(searchWord.toLowerCase()))
+    :
+    selectedOption === 'continents' ?
+    e.continents.continents.find(f => f.toLowerCase().includes(searchWord.toLowerCase()))
+    :
+    e.ccn3.ccn3.includes(searchWord)
+) : datam
+
   return (
     <>
       {/* modal */}
@@ -39,8 +61,8 @@ export default function CountryCardContainer({ data, refreshLocalStorage }) {
         </div>
       </dialog>
       {/* modal */}
-      <section className="grid grid-cols-4 gap-4 place-content-center p-4">
-        {datam.map((e, i) => (
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 place-content-center p-4">
+        {dataSet.map((e, i) => (
           <CountryCard
             key={i}
             e={e}
